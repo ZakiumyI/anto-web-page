@@ -1,21 +1,16 @@
-import { HomeSection } from "../sections/home/home.section.js"
-import { ProfileSection } from "../sections/profile/profile.section.js"
-
-const app = document.getElementById("app")
+import { HomePage } from "../pages/home.page.js";
+import { ProfilePage } from "../pages/profile.page.js";
 
 const routes = {
-  home: HomeSection,
-  profile: ProfileSection
-}
+  home: HomePage,
+  profile: ProfilePage
+};
 
-async function navigate(route) {
-  app.innerHTML = ""
+window.appRouter = {
+  navigate: async (page) => {
+    if (!routes[page]) return console.warn("Page not found:", page);
+    await routes[page]();
+  }
+};
 
-  const section = await routes[route]()
-  app.appendChild(section)
-}
-
-window.appRouter = { navigate }
-
-// primera carga
-navigate("home")
+window.appRouter.navigate("home");
